@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch KnightTour",
+            "request": "launch",
+            "mainClass": "KnightTour",
+            "projectName": "CS421_KnightTour_8ad877f2",
+            "args": "0 8 0 0"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "args": "0 8 0 0"
+        }
+    ]
+}

@@ -1,5 +1,7 @@
 /**
- * 
+ * The Board class for the KnightTour program.
+ * This class manages the 2D array based knight board
+ * made up of Positions.
  * 
  * @author Andrew Carlson
  */
@@ -34,7 +36,7 @@ public class KnightBoard
             }
         }
         currentPos = 0;
-        currentMoveNumber = 1;
+        currentMoveNumber = 0;
         this.addElement(startingX, startingY); //Add the first element to the board based on the input peramiters of the constructor
         
     }
@@ -106,7 +108,7 @@ public class KnightBoard
      * @return Number of moves
      */
     public int getNumberOfMoves(){
-        return numMoves;
+        return currentMoveNumber;
     }
     
     /**
@@ -173,5 +175,15 @@ public class KnightBoard
     
             return totalDistance;
         }
+    }
+
+    public boolean checkBounds(int x, int y){
+        if(x >= 0 && x < boardDimensions){
+            if(y >= 0 && y < boardDimensions){
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }

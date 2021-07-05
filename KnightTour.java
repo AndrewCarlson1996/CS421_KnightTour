@@ -1,5 +1,8 @@
 /**
- * 
+ * The driver class of the KnigthTour program.
+ * This program moves a knight around a bourd of user specified size.
+ * For a solution to be found, the knight must land on every spot on
+ * the board exactly one time.
  * 
  * @author Andrew Carlson
  */
@@ -12,7 +15,7 @@ public class KnightTour {
     private static int solveMethod;
     private static boolean solutionFound;
     
-    public static void mian(String[] args){
+    public static void main(String[] args){
 
         solutionFound = false;
 
@@ -22,12 +25,16 @@ public class KnightTour {
             System.exit(0);
         }
         try {
+            if(Integer.parseInt(args[1]) < 3){ //Board must be at least 3x3
+                System.err.println("Usage Error: <0/1/2 (no/heuristicI/heuristicII search)> <n> <x> <y>");
+                System.exit(0);
+            }
 
+            solveMethod = Integer.parseInt(args[0]);
             dimens = Integer.parseInt(args[1]);
             startingX = Integer.parseInt(args[2]);
             startingY = Integer.parseInt(args[3]);
             board = new KnightBoard(dimens, startingX, startingY);
-            solveMethod = Integer.parseInt(args[0]);
             board.addElement(startingX, startingY);
     
         }
@@ -48,7 +55,14 @@ public class KnightTour {
 
         if(solutionFound){ //print out the number of moves and the board
             System.out.println("The total number of moves is " + board.getNumberOfMoves());
-            System.out.println("");
+
+            for(int r = 0; r < dimens; r++){
+                for(int c = 0; c < dimens; c++){
+                    board.getPosition(r, c).moveNumToString();
+                }
+                System.out.println();
+            }
+            System.out.println();
         }
         else{ 
             System.out.println("No slution was found!");
@@ -72,49 +86,54 @@ public class KnightTour {
             board.removeElement(x, y);
             basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
         }
-        else if(board.getPosition(x + 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 1){
-            board.addElement(x + 1, y + 2);
-            currentPos.setClockPosition(1);
-            basicClockwiseCheck(x + 1, y + 2);
-        }
-        else if(board.getPosition(x + 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 2){
-            board.addElement(x + 2, y + 1);
-            currentPos.setClockPosition(2);
-            basicClockwiseCheck(x + 2, y + 1);
-        }
-        else if(board.getPosition(x + 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 3){
-            board.addElement(x + 2, y - 1);
-            currentPos.setClockPosition(3);
-            basicClockwiseCheck(x + 2, y - 1);
-        }
-        else if(board.getPosition(x + 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 4){
+        else if(board.checkBounds(x + 1, y - 2) && board.getPosition(x + 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 1){
             board.addElement(x + 1, y - 2);
-            currentPos.setClockPosition(4);
+            currentPos.setClockPosition(1);
             basicClockwiseCheck(x + 1, y - 2);
         }
-        else if(board.getPosition(x - 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 5){
-            board.addElement(x - 1, y - 2);
+        else if(board.checkBounds(x + 2, y - 1) && board.getPosition(x + 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 2){
+            board.addElement(x + 2, y - 1);
+            currentPos.setClockPosition(2);
+            basicClockwiseCheck(x + 2, y - 1);
+        }
+        else if(board.checkBounds(x + 2, y + 1) && board.getPosition(x + 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 3){
+            board.addElement(x + 2, y + 1);
+            currentPos.setClockPosition(3);
+            basicClockwiseCheck(x + 2, y + 1);
+        }
+        else if(board.checkBounds(x + 1, y + 2) && board.getPosition(x + 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 4){
+            board.addElement(x + 1, y + 2);
+            currentPos.setClockPosition(4);
+            basicClockwiseCheck(x + 1, y + 2);
+        }
+        else if(board.checkBounds(x - 1, y + 2) && board.getPosition(x - 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 5){
+            board.addElement(x - 1, y + 2);
             currentPos.setClockPosition(5);
-            basicClockwiseCheck(x - 1, y - 2);
+            basicClockwiseCheck(x - 1, y + 2);
         }
-        else if(board.getPosition(x - 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 6){
-            board.addElement(x - 2, y - 1);
-            currentPos.setClockPosition(6);
-            basicClockwiseCheck(x - 2, y - 1);
-        }
-        else if(board.getPosition(x - 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 7){
+        else if(board.checkBounds(x - 2, y + 1) && board.getPosition(x - 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 6){
             board.addElement(x - 2, y + 1);
-            currentPos.setClockPosition(7);
+            currentPos.setClockPosition(6);
             basicClockwiseCheck(x - 2, y + 1);
         }
-        else if(board.getPosition(x - 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 8){
-            board.addElement(x - 1, y + 2);
+        else if(board.checkBounds(x - 2, y - 1) && board.getPosition(x - 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 7){
+            board.addElement(x - 2, y - 1);
+            currentPos.setClockPosition(7);
+            basicClockwiseCheck(x - 2, y - 1);
+        }
+        else if(board.checkBounds(x - 1, y - 2) && board.getPosition(x - 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 8){
+            board.addElement(x - 1, y - 2);
             currentPos.setClockPosition(8);
-            basicClockwiseCheck(x - 1, y + 2);
+            basicClockwiseCheck(x - 1, y - 2);
         }
         else{
             currentPos.resetClockPosition();
             board.removeElement(x, y);
+            if(board.getNumberOfMoves() <= 0){
+                solutionFound = false;
+                System.out.println("failed");
+                return;
+            }
             basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
         }
     }
@@ -134,14 +153,14 @@ public class KnightTour {
         int newClockPosition = 0; //temp storage value for next clock hand position
 
         //retrieve each position in clockwise order
-        Position pos1 = board.getPosition(x + 1, y + 2);
-        Position pos2 = board.getPosition(x + 2, y + 1);
-        Position pos3 = board.getPosition(x + 2, y - 1);
-        Position pos4 = board.getPosition(x + 1, y - 2);
-        Position pos5 = board.getPosition(x - 1, y - 2);
-        Position pos6 = board.getPosition(x - 2, y - 1);
-        Position pos7 = board.getPosition(x - 2, y + 1);
-        Position pos8 = board.getPosition(x - 1, y + 2);
+        Position pos1 = board.getPosition(x + 1, y - 2);
+        Position pos2 = board.getPosition(x + 2, y - 1);
+        Position pos3 = board.getPosition(x + 2, y + 1);
+        Position pos4 = board.getPosition(x + 1, y + 2);
+        Position pos5 = board.getPosition(x - 1, y + 2);
+        Position pos6 = board.getPosition(x - 2, y + 1);
+        Position pos7 = board.getPosition(x - 2, y - 1);
+        Position pos8 = board.getPosition(x - 1, y - 2);
 
         //work counter-clockwise around the board till the closest valid position to noon is found 
         //that has not already been tried before in this instance
@@ -210,8 +229,8 @@ public class KnightTour {
         int newClockPosition = 0; //the position that the clock hand is currently at
 
         //retrieve each position in clockwise order
-        Position pos1 = board.getPosition(x + 1, y + 2);
-        Position pos2 = board.getPosition(x + 2, y + 1);
+        Position pos1 = board.getPosition(x + 1, y - 2);
+        Position pos2 = board.getPosition(x + 2, y - 1);
         Position pos3 = board.getPosition(x + 2, y - 1);
         Position pos4 = board.getPosition(x + 1, y - 2);
         Position pos5 = board.getPosition(x - 1, y - 2);
@@ -291,8 +310,8 @@ public class KnightTour {
         int numValidMoves = 0; //counter for the number of valid moves
 
         //All 8 posible positions
-        Position pos1 = board.getPosition(x + 1, y + 2);
-        Position pos2 = board.getPosition(x + 2, y + 1);
+        Position pos1 = board.getPosition(x + 1, y - 2);
+        Position pos2 = board.getPosition(x + 2, y - 1);
         Position pos3 = board.getPosition(x + 2, y - 1);
         Position pos4 = board.getPosition(x + 1, y - 2);
         Position pos5 = board.getPosition(x - 1, y - 2);

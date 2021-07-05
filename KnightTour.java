@@ -52,7 +52,6 @@ public class KnightTour {
             System.out.println("No slution was found!");
             System.exit(0);
         }
-
     }
 
     /**
@@ -62,10 +61,9 @@ public class KnightTour {
      * @return
      */
     public static void basicClockwiseCheck(int x, int y){
-
         Position currentPos = board.getPosition(x, y);
         Position previousPos = board.getPreviousPosition();
-        
+
         if(currentPos.getClockPosition() == 8){
             currentPos.resetClockPosition();
             board.removeElement(x, y);
@@ -198,40 +196,124 @@ public class KnightTour {
      * @param y
      */
     public static void HeuristicII(int x, int y){
-        if(){
+        Position currentPos = board.getPosition(x, y);
+        Position previousPos = board.getPreviousPosition();
+        Position posToGo = null;
+        int numValidMoves = -1;
+        int newClockPosition = 0;
 
-        }
-        else if(){
+        //retrieve each position in clockwise order
+        Position pos1 = board.getPosition(x + 1, y + 2);
+        Position pos2 = board.getPosition(x + 2, y + 1);
+        Position pos3 = board.getPosition(x + 2, y - 1);
+        Position pos4 = board.getPosition(x + 1, y - 2);
+        Position pos5 = board.getPosition(x - 1, y - 2);
+        Position pos6 = board.getPosition(x - 2, y - 1);
+        Position pos7 = board.getPosition(x - 2, y + 1);
+        Position pos8 = board.getPosition(x - 1, y + 2);
 
+        //work counter-clockwise around the board till the closest valid position to noon is found 
+        //that has not already been tried before in this instance
+        if(currentPos.getClockPosition() == 8){ //if clock was already on 8th position, reset current position and back-track
+            currentPos.resetClockPosition();
+            board.removeElement(x, y);
+            HeuristicII(previousPos.getXCoor(), previousPos.getYCoor());
         }
-        else if(){
+        if(pos8.getValidity() && (numberOfValidMoves(pos8) == -1) && currentPos.getClockPosition() < 8){
+            numValidMoves = numberOfValidMoves(pos8);
+            newClockPosition = 8;
+            posToGo = pos8;
+        }
+        if(pos7.getValidity() && (numberOfValidMoves(pos7) == -1 || numberOfValidMoves(pos7) <= numValidMoves) && currentPos.getClockPosition() < 7){
+            numValidMoves = numberOfValidMoves(pos7);
+            newClockPosition = 7;
+            posToGo = pos7;
+        }
+        if(pos6.getValidity() && (numberOfValidMoves(pos6) == -1 || numberOfValidMoves(pos6) <= numValidMoves) && currentPos.getClockPosition() < 6){
+            numValidMoves = numberOfValidMoves(pos6);
+            newClockPosition = 6;
+            posToGo = pos6;
+        }
+        if(pos5.getValidity() && (numberOfValidMoves(pos5) == -1 || numberOfValidMoves(pos5) <= numValidMoves) && currentPos.getClockPosition() < 5){
+            numValidMoves = numberOfValidMoves(pos5);
+            newClockPosition = 5;
+            posToGo = pos5;
+        }
+        if(pos4.getValidity() && (numberOfValidMoves(pos4) == -1 || numberOfValidMoves(pos4) <= numValidMoves) && currentPos.getClockPosition() < 4){
+            numValidMoves = numberOfValidMoves(pos4);
+            newClockPosition = 4;
+            posToGo = pos4;
+        }
+        if(pos3.getValidity() && (numberOfValidMoves(pos3) == -1 || numberOfValidMoves(pos3) <= numValidMoves) && currentPos.getClockPosition() < 3){
+            numValidMoves = numberOfValidMoves(pos3);
+            newClockPosition = 3;
+            posToGo = pos3;
+        }
+        if(pos2.getValidity() && (numberOfValidMoves(pos2) == -1 || numberOfValidMoves(pos2) <= numValidMoves) && currentPos.getClockPosition() < 2){
+            numValidMoves = numberOfValidMoves(pos2);
+            newClockPosition = 2;
+            posToGo = pos2;
+        }
+        if(pos1.getValidity() && (numberOfValidMoves(pos1) == -1 || numberOfValidMoves(pos1) <= numValidMoves) && currentPos.getClockPosition() < 1){
+            numValidMoves = numberOfValidMoves(pos1);
+            newClockPosition = 1;
+            posToGo = pos1;
+        }
+        
+        board.addElement(posToGo.getXCoor(), posToGo.getYCoor());
+        currentPos.setClockPosition(newClockPosition);
+        HeuristicI(posToGo.getXCoor(), posToGo.getYCoor());
 
+        
+        if(currentPos.getClockPosition() == 0){ //if no good position was found, reset current position and back-track
+            currentPos.resetClockPosition();
+            board.removeElement(x, y);
+            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
         }
-        else if(){
-
-        }
-        else if(){
-
-        }
-        else if(){
-
-        }
-        else if(){
-
-        }
-        else if(){
-
-        }
-        else{
-
-        }
-    
     }
 
-    /**
-     * 
-     * @param pos
-     * @return
-     */
-    
+    public static int numberOfValidMoves(Position pos){
+        int x = pos.getXCoor();
+        int y = pos.getYCoor();
+        int numValidMoves = 0;
+
+        Position pos1 = board.getPosition(x + 1, y + 2);
+        Position pos2 = board.getPosition(x + 2, y + 1);
+        Position pos3 = board.getPosition(x + 2, y - 1);
+        Position pos4 = board.getPosition(x + 1, y - 2);
+        Position pos5 = board.getPosition(x - 1, y - 2);
+        Position pos6 = board.getPosition(x - 2, y - 1);
+        Position pos7 = board.getPosition(x - 2, y + 1);
+        Position pos8 = board.getPosition(x - 1, y + 2);
+
+        if(pos1.getValidity()){
+            numValidMoves++;
+        }
+        if(pos2.getValidity()){
+            numValidMoves++;
+        }
+        if(pos3.getValidity()){
+            numValidMoves++;
+        }
+        if(pos4.getValidity()){
+            numValidMoves++;
+        }
+        if(pos5.getValidity()){
+            numValidMoves++;
+        }
+        if(pos5.getValidity()){
+            numValidMoves++;
+        }
+        if(pos6.getValidity()){
+            numValidMoves++;
+        }
+        if(pos7.getValidity()){
+            numValidMoves++;
+        }
+        if(pos8.getValidity()){
+            numValidMoves++;
+        }
+        return numValidMoves;
+
+    }
 }

@@ -1,29 +1,33 @@
-
+/**
+ * 
+ * 
+ * @author Andrew Carlson
+ */
 public class KnightBoard
 {
 
     //create board attributes
-    private int boardDimensions;
-    private Position[][] board;
-    private int numMoves;
-    private int currentPos;
-    private int currentMoveNumber;
-    private Position[] listOfMoves;
-    
+    private int boardDimensions; //The height/width of the square knight board
+    private Position[][] board; //The 2d array of Positions that holds the knight board
+    private int numMoves; //The current number of moves made on the board
+    private int currentPos; //The position of the most recent move that was made
+    private int currentMoveNumber; //The number of the moves that are on the board
+    private Position[] listOfMoves; //Array that keep track of the moves, in order, that are currently on the board
 
     /**
+     * Constroctor for the KnightBoard class
      * 
-     * @param dimensions
-     * @param startingX
-     * @param startingY
+     * @param dimensions The height/width of the square knight board
+     * @param startingX The value of the starting x position on the knight board
+     * @param startingY The value of the starting y position on the knight board
      */
     public KnightBoard(int dimensions, int startingX, int startingY){
         boardDimensions = dimensions;
         numMoves = 0;
         board = new Position[boardDimensions][boardDimensions];
-        this.setSizeOfListOfMoves(dimensions);
+        setSizeOfListOfMoves(dimensions);
 
-        for(int i = 0; i < dimensions; i++){
+        for(int i = 0; i < dimensions; i++){ //Populate the board with positions
             for(int j = 0; j < dimensions; j++){
                 Position newPos = new Position(i, j);
                 board[i][j] = newPos;
@@ -31,23 +35,23 @@ public class KnightBoard
         }
         currentPos = 0;
         currentMoveNumber = 1;
-        this.addElement(startingX, startingY);
+        this.addElement(startingX, startingY); //Add the first element to the board based on the input peramiters of the constructor
         
     }
 
     /**
      * 
-     * @return
+     * @return The height/width of the square knight board
      */
     public int getBoardDimensions(){
         return boardDimensions;
     }
 
     /**
+     * Adds an element to the knight board
      * 
-     * @param move
-     * @param x
-     * @param y
+     * @param x X coordinate of the position where the element is to be added
+     * @param y Y coordinate of the position where the element is to be added
      */
     public void addElement(int x, int y){
         board[x][y].setMoveNumber(currentMoveNumber); //Setting the move number of that position
@@ -60,8 +64,8 @@ public class KnightBoard
 
     /**
      * 
-     * @param x
-     * @param y
+     * @param x X coordinate of the position where the element is to be removed
+     * @param y Y coordinate of the position where the element is to be removed
      */
     public void removeElement(int x, int y){
         board[x][y].setMoveNumber(0);
@@ -73,9 +77,9 @@ public class KnightBoard
 
     /**
      * 
-     * @param x
-     * @param y
-     * @return
+     * @param x X coordinate of the position where the desired element is
+     * @param y Y coordinate of the position where the desired element is
+     * @return The element at the specified position
      */
     public Position getElement(int x, int y){
         return board[x][y];
@@ -83,7 +87,7 @@ public class KnightBoard
 
     /**
      * 
-     * @return
+     * @return Current position
      */
     public Position getCurrentPosition(){
         return listOfMoves[currentPos - 1];
@@ -91,7 +95,7 @@ public class KnightBoard
 
     /**
      * 
-     * @return
+     * @return Previous position
      */
     public Position getPreviousPosition(){
         return listOfMoves[currentPos - 2];
@@ -99,7 +103,7 @@ public class KnightBoard
 
     /**
      * 
-     * @return
+     * @return Number of moves
      */
     public int getNumberOfMoves(){
         return numMoves;
@@ -107,15 +111,16 @@ public class KnightBoard
     
     /**
      * 
-     * @param x
+     * @param x 
      * @param y
-     * @return
+     * @return Position on knight board
      */
     public Position getPosition(int x, int y){
         return board[x][y];
     }
 
     /**
+     * Set the size of the array that holds the list of moves on the board
      * 
      * @param i
      */
@@ -123,12 +128,18 @@ public class KnightBoard
         listOfMoves = new Position[i * i];
     }
 
+    /**
+     * Calculates the distance a position is from the edge of the board
+     * 
+     * @param pos 
+     * @return The distance from the edge
+     */
     public int distanceToEdge(Position pos){
         int totalDistance = 0;
         int x = pos.getXCoor();
         int y = pos.getYCoor();
 
-        if(boardDimensions % 2 == 0){
+        if(boardDimensions % 2 == 0){ //If the dimensions of the board are odd
             if(x < boardDimensions / 2){
                 totalDistance = x;
             }
@@ -145,7 +156,7 @@ public class KnightBoard
     
             return totalDistance;
         }
-        else{
+        else{ //If the dimensions of the board are even
             if(x <= boardDimensions / 2){
                 totalDistance = x;
             }

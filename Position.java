@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * 
+ * @author Andrew Carlson
+ */
 public class Position {
     
     private boolean isValid;

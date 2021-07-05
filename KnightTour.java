@@ -1,6 +1,8 @@
-import java.util.List;
-import java.util.LinkedList;
-
+/**
+ * 
+ * 
+ * @author Andrew Carlson
+ */
 public class KnightTour {
 
     private static int dimens;
@@ -55,10 +57,11 @@ public class KnightTour {
     }
 
     /**
+     * Solves the knight tour board by moving the knight to the next possible position
+     * in the clockwise direction
      * 
      * @param x
      * @param y
-     * @return
      */
     public static void basicClockwiseCheck(int x, int y){
         Position currentPos = board.getPosition(x, y);
@@ -117,16 +120,18 @@ public class KnightTour {
     }
 
     /**
+     * Solves the knight tour board by moving the knight to the open positions
+     * closest to the edge of the board.
      * 
      * @param x
      * @param y
      */
     public static void HeuristicI(int x, int y){
-        Position currentPos = board.getPosition(x, y);
-        Position previousPos = board.getPreviousPosition();
-        Position posToGo = null;
-        int closestDistance = -1;
-        int newClockPosition = 0;
+        Position currentPos = board.getPosition(x, y); //the position that the knight is currently on
+        Position previousPos = board.getPreviousPosition(); //the position that the knight just came from
+        Position posToGo = null; //the next move to be made
+        int closestDistance = -1; //the current distance from the edge of the positions closest to the edge
+        int newClockPosition = 0; //temp storage value for next clock hand position
 
         //retrieve each position in clockwise order
         Position pos1 = board.getPosition(x + 1, y + 2);
@@ -140,7 +145,7 @@ public class KnightTour {
 
         //work counter-clockwise around the board till the closest valid position to noon is found 
         //that has not already been tried before in this instance
-        if(currentPos.getClockPosition() == 8){ //if clock was already on 8th position, reset current position and back-track
+        if(currentPos.getClockPosition() == 8){ //if clock hand is already on 8th position, reset current position of clock hand and back-track
             currentPos.resetClockPosition();
             board.removeElement(x, y);
             HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
@@ -191,16 +196,18 @@ public class KnightTour {
     }
 
     /**
+     * Solves the knight tour board by moving the knight to open positions with
+     * the fewest amount of next possible moves
      * 
-     * @param x
-     * @param y
+     * @param x x coordinate of the position being checked
+     * @param y y coordinate of the position being checked
      */
     public static void HeuristicII(int x, int y){
-        Position currentPos = board.getPosition(x, y);
-        Position previousPos = board.getPreviousPosition();
-        Position posToGo = null;
-        int numValidMoves = -1;
-        int newClockPosition = 0;
+        Position currentPos = board.getPosition(x, y); //the position that the knight is currently on
+        Position previousPos = board.getPreviousPosition(); //the position that the knight just came from
+        Position posToGo = null; //the next move to be made
+        int numValidMoves = -1; //number of moves that can be made from each next-possible position
+        int newClockPosition = 0; //the position that the clock hand is currently at
 
         //retrieve each position in clockwise order
         Position pos1 = board.getPosition(x + 1, y + 2);
@@ -214,7 +221,7 @@ public class KnightTour {
 
         //work counter-clockwise around the board till the closest valid position to noon is found 
         //that has not already been tried before in this instance
-        if(currentPos.getClockPosition() == 8){ //if clock was already on 8th position, reset current position and back-track
+        if(currentPos.getClockPosition() == 8){ //if clock hand is already on 8th position, reset current position of clock hand and back-track
             currentPos.resetClockPosition();
             board.removeElement(x, y);
             HeuristicII(previousPos.getXCoor(), previousPos.getYCoor());
@@ -272,11 +279,18 @@ public class KnightTour {
         }
     }
 
+    /**
+     * Counts the number of valid moves a knight can make
+     * 
+     * @param pos The position that is counted from
+     * @return The number of valid moves a knight can make
+     */
     public static int numberOfValidMoves(Position pos){
-        int x = pos.getXCoor();
-        int y = pos.getYCoor();
-        int numValidMoves = 0;
+        int x = pos.getXCoor(); //The x coordinate of the position
+        int y = pos.getYCoor(); //The y coordinate of the position
+        int numValidMoves = 0; //counter for the number of valid moves
 
+        //All 8 posible positions
         Position pos1 = board.getPosition(x + 1, y + 2);
         Position pos2 = board.getPosition(x + 2, y + 1);
         Position pos3 = board.getPosition(x + 2, y - 1);

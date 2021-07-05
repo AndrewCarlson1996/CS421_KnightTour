@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.LinkedList;
 
 public class KnightTour {
 
@@ -25,6 +26,7 @@ public class KnightTour {
             startingY = Integer.parseInt(args[3]);
             board = new KnightBoard(dimens, startingX, startingY);
             solveMethod = Integer.parseInt(args[0]);
+            board.addElement(startingX, startingY);
     
         }
         catch(Exception e)
@@ -63,8 +65,10 @@ public class KnightTour {
 
         Position currentPos = board.getPosition(x, y);
         Position previousPos = board.getPreviousPosition();
+        
         if(currentPos.getClockPosition() == 8){
             currentPos.resetClockPosition();
+            board.removeElement(x, y);
             basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
         }
         else if(board.getPosition(x + 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 1){
@@ -109,6 +113,7 @@ public class KnightTour {
         }
         else{
             currentPos.resetClockPosition();
+            board.removeElement(x, y);
             basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
         }
     }
@@ -119,25 +124,72 @@ public class KnightTour {
      * @param y
      */
     public static void HeuristicI(int x, int y){
-        Position pos = board.getPosition(x, y);
+        Position currentPos = board.getPosition(x, y);
+        Position previousPos = board.getPreviousPosition();
+        Position posToGo = null;
+        int closestDistance = -1;
+        int newClockPosition = 0;
 
-        //Distance of each position to the edge
-        int distancePos1 = board.distanceToEdge(board.getPosition(x + 1, y + 2));
-        int distancePos2 = board.distanceToEdge(board.getPosition(x + 2, y + 1));
-        int distancePos3 = board.distanceToEdge(board.getPosition(x + 2, y - 1));
-        int distancePos4 = board.distanceToEdge(board.getPosition(x + 1, y - 2));
-        int distancePos5 = board.distanceToEdge(board.getPosition(x - 1, y - 2));
-        int distancePos6 = board.distanceToEdge(board.getPosition(x - 2, y - 1));
-        int distancePos7 = board.distanceToEdge(board.getPosition(x - 2, y + 1));
-        int distancePos8 = board.distanceToEdge(board.getPosition(x - 1, y + 2));
+        //retrieve each position in clockwise order
+        Position pos1 = board.getPosition(x + 1, y + 2);
+        Position pos2 = board.getPosition(x + 2, y + 1);
+        Position pos3 = board.getPosition(x + 2, y - 1);
+        Position pos4 = board.getPosition(x + 1, y - 2);
+        Position pos5 = board.getPosition(x - 1, y - 2);
+        Position pos6 = board.getPosition(x - 2, y - 1);
+        Position pos7 = board.getPosition(x - 2, y + 1);
+        Position pos8 = board.getPosition(x - 1, y + 2);
 
-        if(){
-            
+        //work counter-clockwise around the board till the closest valid position to noon is found 
+        //that has not already been tried before in this instance
+        if(currentPos.getClockPosition() == 8){ //if clock was already on 8th position, reset current position and back-track
+            currentPos.resetClockPosition();
+            board.removeElement(x, y);
+            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
         }
+        if(pos8.getValidity() && board.distanceToEdge(pos8) <= closestDistance && currentPos.getClockPosition() < 8){
+            newClockPosition = 8;
+            posToGo = pos8;
+        }
+        if(pos7.getValidity() && board.distanceToEdge(pos7) <= closestDistance && currentPos.getClockPosition() < 7){
+            newClockPosition = 7;
+            posToGo = pos7;
+        }
+        if(pos6.getValidity() && board.distanceToEdge(pos6) <= closestDistance && currentPos.getClockPosition() < 6){
+            newClockPosition = 6;
+            posToGo = pos6;
+        }
+        if(pos5.getValidity() && board.distanceToEdge(pos5) <= closestDistance && currentPos.getClockPosition() < 5){
+            newClockPosition = 5;
+            posToGo = pos5;
+        }
+        if(pos4.getValidity() && board.distanceToEdge(pos4) <= closestDistance && currentPos.getClockPosition() < 4){
+            newClockPosition = 4;
+            posToGo = pos4;
+        }
+        if(pos3.getValidity() && board.distanceToEdge(pos3) <= closestDistance && currentPos.getClockPosition() < 3){
+            newClockPosition = 3;
+            posToGo = pos3;
+        }
+        if(pos2.getValidity() && board.distanceToEdge(pos2) <= closestDistance && currentPos.getClockPosition() < 2){
+            newClockPosition = 2;
+            posToGo = pos2;
+        }
+        if(pos1.getValidity() && board.distanceToEdge(pos1) <= closestDistance && currentPos.getClockPosition() < 1){
+            newClockPosition = 1;
+            posToGo = pos1;
+        }
+        
+        board.addElement(posToGo.getXCoor(), posToGo.getYCoor());
+        currentPos.setClockPosition(newClockPosition);
+        HeuristicI(posToGo.getXCoor(), posToGo.getYCoor());
 
-
-        if()
-
+        
+        if(currentPos.getClockPosition() == 0){ //if no good position was found, reset current position and back-track
+            currentPos.resetClockPosition();
+            board.removeElement(x, y);
+            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
+        }
     }
 
     /**

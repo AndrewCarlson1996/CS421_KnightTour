@@ -5,12 +5,14 @@ public class Position {
     private int moveNumber;
     private int xCoord;
     private int yCoord;
+    private int clockPosition;
 
     public Position(int x, int y){
         isValid = true;
         moveNumber = 0;
         xCoord = x;
         yCoord = y;
+        clockPosition = 0;
     }
 
     public void setValidity(boolean b){
@@ -38,4 +40,15 @@ public class Position {
         return yCoord;
     }
 
+    public void setClockPosition(int i){
+        clockPosition = i;
+    }
+
+    public int getClockPosition(){
+        return clockPosition;
+    }
+
+    public void resetClockPosition(){
+        clockPosition = 0;
+    }
 }

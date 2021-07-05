@@ -1,3 +1,4 @@
+import java.util.List;
 
 public class KnightTour {
 
@@ -15,7 +16,7 @@ public class KnightTour {
         //check input format
         if(args.length != 4){
             System.err.println("Usage Error: <0/1/2 (no/heuristicI/heuristicII search)> <n> <x> <y>");
-            return;
+            System.exit(0);
         }
         try {
 
@@ -35,10 +36,10 @@ public class KnightTour {
             basicClockwiseCheck(startingX, startingY);
         }
         else if(solveMethod == 1){ //if method = 1, heuristicI method is used
-
+            HeuristicISearch(startingX, startingY);
         }
         else if(solveMethod == 2){ //if method = 2, heuristicII method is used
-
+            HeuristicIISearch(startingX, startingY);
         }
 
         if(solutionFound){ //print out the number of moves and the board
@@ -60,43 +61,57 @@ public class KnightTour {
      */
     public static void basicClockwiseCheck(int x, int y){
 
-        if(board.getPosition(x + 1, y + 2).getValidity() != false){
+        Position currentPos = board.getPosition(x, y);
+        Position previousPos = board.getPreviousPosition();
+        if(currentPos.getClockPosition() == 8){
+            currentPos.resetClockPosition();
+            basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
+        }
+        else if(board.getPosition(x + 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 1){
             board.addElement(x + 1, y + 2);
+            currentPos.setClockPosition(1);
             basicClockwiseCheck(x + 1, y + 2);
         }
-        else if(board.getPosition(x + 2, y + 1).getValidity() != false){
+        else if(board.getPosition(x + 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 2){
             board.addElement(x + 2, y + 1);
+            currentPos.setClockPosition(2);
             basicClockwiseCheck(x + 2, y + 1);
         }
-        else if(board.getPosition(x + 2, y - 1).getValidity() != false){
+        else if(board.getPosition(x + 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 3){
             board.addElement(x + 2, y - 1);
+            currentPos.setClockPosition(3);
             basicClockwiseCheck(x + 2, y - 1);
         }
-        else if(board.getPosition(x + 1, y - 2).getValidity() != false){
+        else if(board.getPosition(x + 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 4){
             board.addElement(x + 1, y - 2);
+            currentPos.setClockPosition(4);
             basicClockwiseCheck(x + 1, y - 2);
         }
-        else if(board.getPosition(x - 1, y - 2).getValidity() != false){
+        else if(board.getPosition(x - 1, y - 2).getValidity() != false && currentPos.getClockPosition() < 5){
             board.addElement(x - 1, y - 2);
+            currentPos.setClockPosition(5);
             basicClockwiseCheck(x - 1, y - 2);
         }
-        else if(board.getPosition(x - 2, y - 1).getValidity() != false){
+        else if(board.getPosition(x - 2, y - 1).getValidity() != false && currentPos.getClockPosition() < 6){
             board.addElement(x - 2, y - 1);
+            currentPos.setClockPosition(6);
             basicClockwiseCheck(x - 2, y - 1);
         }
-        else if(board.getPosition(x - 2, y + 1).getValidity() != false){
+        else if(board.getPosition(x - 2, y + 1).getValidity() != false && currentPos.getClockPosition() < 7){
             board.addElement(x - 2, y + 1);
+            currentPos.setClockPosition(7);
             basicClockwiseCheck(x - 2, y + 1);
         }
-        else if(board.getPosition(x - 1, y + 2).getValidity() != false){
+        else if(board.getPosition(x - 1, y + 2).getValidity() != false && currentPos.getClockPosition() < 8){
             board.addElement(x - 1, y + 2);
+            currentPos.setClockPosition(8);
             basicClockwiseCheck(x - 1, y + 2);
         }
         else{
-            basicClockwiseCheck(board.getPreviousPosition().getXCoor(), board.getPreviousPosition().getYCoor());
+            currentPos.resetClockPosition();
+            basicClockwiseCheck(previousPos.getXCoor(), previousPos.getYCoor());
         }
     }
-
 
     /**
      * 
@@ -104,6 +119,33 @@ public class KnightTour {
      * @param y
      */
     public static void HeuristicISearch(int x, int y){
+        Position pos = board.getPosition(x, y);
+
+        //Distance of each position to the edge
+        int distancePos1 = board.distanceToEdge(board.getPosition(x + 1, y + 2));
+        int distancePos2 = board.distanceToEdge(board.getPosition(x + 2, y + 1));
+        int distancePos3 = board.distanceToEdge(board.getPosition(x + 2, y - 1));
+        int distancePos4 = board.distanceToEdge(board.getPosition(x + 1, y - 2));
+        int distancePos5 = board.distanceToEdge(board.getPosition(x - 1, y - 2));
+        int distancePos6 = board.distanceToEdge(board.getPosition(x - 2, y - 1));
+        int distancePos7 = board.distanceToEdge(board.getPosition(x - 2, y + 1));
+        int distancePos8 = board.distanceToEdge(board.getPosition(x - 1, y + 2));
+
+        if(){
+            
+        }
+
+
+        if()
+
+    }
+
+    /**
+     * 
+     * @param x
+     * @param y
+     */
+    public static void HeuristicIISearch(int x, int y){
         if(){
 
         }
@@ -134,18 +176,10 @@ public class KnightTour {
     
     }
 
-
-    public int distanceToEdge(int x, int y){
-        int distance = 0;
-
-        if(x < board.getBoardDimensions() / 2){
-            distance = x;
-        }
-        else{
-            
-        }
-
-
-    }
-
+    /**
+     * 
+     * @param pos
+     * @return
+     */
+    
 }

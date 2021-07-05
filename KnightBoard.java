@@ -122,4 +122,45 @@ public class KnightBoard
     public void setSizeOfListOfMoves(int i){
         listOfMoves = new Position[i * i];
     }
+
+    public int distanceToEdge(Position pos){
+        int totalDistance = 0;
+        int x = pos.getXCoor();
+        int y = pos.getYCoor();
+
+        if(boardDimensions % 2 == 0){
+            if(x < boardDimensions / 2){
+                totalDistance = x;
+            }
+            else{
+                totalDistance = boardDimensions - x;
+            }
+    
+            if(y < boardDimensions / 2){
+                totalDistance += y;
+            }
+            else{
+                totalDistance += (boardDimensions - y);
+            }
+    
+            return totalDistance;
+        }
+        else{
+            if(x <= boardDimensions / 2){
+                totalDistance = x;
+            }
+            else{
+                totalDistance = boardDimensions - x;
+            }
+    
+            if(y <= boardDimensions / 2){
+                totalDistance += y;
+            }
+            else{
+                totalDistance += (boardDimensions - y);
+            }
+    
+            return totalDistance;
+        }
+    }
 }

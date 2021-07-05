@@ -36,10 +36,10 @@ public class KnightTour {
             basicClockwiseCheck(startingX, startingY);
         }
         else if(solveMethod == 1){ //if method = 1, heuristicI method is used
-            HeuristicISearch(startingX, startingY);
+            HeuristicI(startingX, startingY);
         }
         else if(solveMethod == 2){ //if method = 2, heuristicII method is used
-            HeuristicIISearch(startingX, startingY);
+            HeuristicII(startingX, startingY);
         }
 
         if(solutionFound){ //print out the number of moves and the board
@@ -118,7 +118,7 @@ public class KnightTour {
      * @param x
      * @param y
      */
-    public static void HeuristicISearch(int x, int y){
+    public static void HeuristicI(int x, int y){
         Position pos = board.getPosition(x, y);
 
         //Distance of each position to the edge
@@ -145,7 +145,7 @@ public class KnightTour {
      * @param x
      * @param y
      */
-    public static void HeuristicIISearch(int x, int y){
+    public static void HeuristicII(int x, int y){
         if(){
 
         }

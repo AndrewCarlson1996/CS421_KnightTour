@@ -57,14 +57,14 @@ public class KnightTour {
         }
 
         if(solutionFound){ //print out the number of moves and the board
-            System.out.println("The total number of moves is " + board.getNumberOfMoves());
+            System.out.println("The total number of moves is: " + board.getNumberOfMoves());
 
-            for(int r = 0; r < dimens; r++){
-                for(int c = 0; c < dimens; c++){
-                    board.getPosition(r, c).moveNumToString();
-                }
-                System.out.println();
+            int[][] intBoard = board.loadBoardToArray();
+            System.out.println();
+            for(int[] row : intBoard) {
+                printRow(row);
             }
+
             System.out.println();
         }
         else{ 
@@ -82,8 +82,6 @@ public class KnightTour {
      */
     public static void basicClockwiseCheck(int x, int y){
         Position currentPos = board.getPosition(x, y);
-        Position previousPos = board.getPreviousPosition();
-        int currentClockPos = currentPos.getClockPosition();
 
         if(board.getPosition(startingX, startingY) == currentPos){
             if(homeNumberMoveIndex == homeNumberMove){
@@ -97,53 +95,41 @@ public class KnightTour {
             }
             return;
         }
-        if(currentPos.getClockPosition() == 8){
-            currentPos.resetClockPosition();
-            board.removeElement(x, y);
-            return;
-        }
-        if(board.checkBounds(x + 1, y - 2) && board.getPosition(x + 1, y - 2).getValidity() != false && currentClockPos < 1){
+        if(board.checkBounds(x + 1, y - 2) && board.getPosition(x + 1, y - 2).getValidity() != false){
             board.addElement(x + 1, y - 2);
-            currentPos.setClockPosition(1);
             basicClockwiseCheck(x + 1, y - 2);
         }
-        if(board.checkBounds(x + 2, y - 1) && board.getPosition(x + 2, y - 1).getValidity() != false && currentClockPos < 2){
+        if(board.checkBounds(x + 2, y - 1) && board.getPosition(x + 2, y - 1).getValidity() != false){
             board.addElement(x + 2, y - 1);
-            currentPos.setClockPosition(2);
             basicClockwiseCheck(x + 2, y - 1);
         }
-        if(board.checkBounds(x + 2, y + 1) && board.getPosition(x + 2, y + 1).getValidity() != false && currentClockPos < 3){
+        if(board.checkBounds(x + 2, y + 1) && board.getPosition(x + 2, y + 1).getValidity() != false){
             board.addElement(x + 2, y + 1);
-            currentPos.setClockPosition(3);
             basicClockwiseCheck(x + 2, y + 1);
         }
-        if(board.checkBounds(x + 1, y + 2) && board.getPosition(x + 1, y + 2).getValidity() != false && currentClockPos < 4){
+        if(board.checkBounds(x + 1, y + 2) && board.getPosition(x + 1, y + 2).getValidity() != false){
             board.addElement(x + 1, y + 2);
-            currentPos.setClockPosition(4);
             basicClockwiseCheck(x + 1, y + 2);
         }
-        if(board.checkBounds(x - 1, y + 2) && board.getPosition(x - 1, y + 2).getValidity() != false && currentClockPos < 5){
+        if(board.checkBounds(x - 1, y + 2) && board.getPosition(x - 1, y + 2).getValidity() != false){
             board.addElement(x - 1, y + 2);
-            currentPos.setClockPosition(5);
             basicClockwiseCheck(x - 1, y + 2);
         }
-        if(board.checkBounds(x - 2, y + 1) && board.getPosition(x - 2, y + 1).getValidity() != false && currentClockPos < 6){
+        if(board.checkBounds(x - 2, y + 1) && board.getPosition(x - 2, y + 1).getValidity() != false){
             board.addElement(x - 2, y + 1);
-            currentPos.setClockPosition(6);
             basicClockwiseCheck(x - 2, y + 1);
         }
-        if(board.checkBounds(x - 2, y - 1) && board.getPosition(x - 2, y - 1).getValidity() != false && currentClockPos < 7){
+        if(board.checkBounds(x - 2, y - 1) && board.getPosition(x - 2, y - 1).getValidity() != false){
             board.addElement(x - 2, y - 1);
-            currentPos.setClockPosition(7);
             basicClockwiseCheck(x - 2, y - 1);
         }
-        if(board.checkBounds(x - 1, y - 2) && board.getPosition(x - 1, y - 2).getValidity() != false && currentClockPos < 8){
+        if(board.checkBounds(x - 1, y - 2) && board.getPosition(x - 1, y - 2).getValidity() != false){
             board.addElement(x - 1, y - 2);
-            currentPos.setClockPosition(8);
             basicClockwiseCheck(x - 1, y - 2);
         }
-        currentPos.resetClockPosition();
-        board.removeElement(x, y);
+        if(solutionFound != true){
+            board.removeElement(x, y);
+        }
         return;
     }
 
@@ -369,5 +355,13 @@ public class KnightTour {
             }
         }
         return numValidMoves;
+    }
+
+    public static void printRow(int[] row) {
+        for (int i : row) {
+            System.out.print(i);
+            System.out.print("\t");
+        }
+        System.out.println();
     }
 }

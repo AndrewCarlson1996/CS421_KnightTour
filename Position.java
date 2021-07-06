@@ -5,7 +5,7 @@
  * 
  * @author Andrew Carlson
  */
-public class Position {
+public class Position{
     
     private boolean isValid;
     private int moveNumber;
@@ -104,6 +104,6 @@ public class Position {
     }
 
     public void moveNumToString(){
-        System.out.print(moveNumber + " ");
+        System.out.print(moveNumber);
     }
 }

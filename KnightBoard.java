@@ -58,7 +58,6 @@ public class KnightBoard
     public void addElement(int x, int y){
         currentMoveNumber++; //The number that will be placed inside the next filled position on the board
         board[x][y].setMoveNumber(currentMoveNumber); //Setting the move number of that position
-        System.out.println(currentMoveNumber);
         board[x][y].setValidity(false); //Position on board is no longer valid
         numMoves++; //Total number of moves used to solve board
         listOfMoves[currentPos] = (board[x][y]); //The array that stores the list of moves made
@@ -197,5 +196,17 @@ public class KnightBoard
             return false;
         }
         return false;
+    }
+
+    public int[][] loadBoardToArray(){
+        int[][] intBoard = new int[boardDimensions][boardDimensions];
+
+        for(int c = 0; c < boardDimensions; c++)
+        {
+            for(int r = 0; r < boardDimensions; r++){
+                intBoard[c][r] = getPosition(r, c).getMoveNumber();
+            }
+        }
+        return intBoard;
     }
 }

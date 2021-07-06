@@ -56,8 +56,9 @@ public class KnightBoard
      * @param y Y coordinate of the position where the element is to be added
      */
     public void addElement(int x, int y){
-        board[x][y].setMoveNumber(currentMoveNumber); //Setting the move number of that position
         currentMoveNumber++; //The number that will be placed inside the next filled position on the board
+        board[x][y].setMoveNumber(currentMoveNumber); //Setting the move number of that position
+        System.out.println(currentMoveNumber);
         board[x][y].setValidity(false); //Position on board is no longer valid
         numMoves++; //Total number of moves used to solve board
         listOfMoves[currentPos] = (board[x][y]); //The array that stores the list of moves made
@@ -100,7 +101,10 @@ public class KnightBoard
      * @return Previous position
      */
     public Position getPreviousPosition(){
-        return listOfMoves[currentPos - 2];
+        if(currentPos >= 2){
+            return listOfMoves[currentPos - 2];
+        }
+        return null;
     }
 
     /**
@@ -108,9 +112,10 @@ public class KnightBoard
      * @return Number of moves
      */
     public int getNumberOfMoves(){
-        return currentMoveNumber;
+        return numMoves;
     }
-    
+
+
     /**
      * 
      * @param x 
@@ -118,7 +123,10 @@ public class KnightBoard
      * @return Position on knight board
      */
     public Position getPosition(int x, int y){
-        return board[x][y];
+        if(checkBounds(x, y)){
+            return board[x][y];
+        }
+        return null;
     }
 
     /**
@@ -128,6 +136,10 @@ public class KnightBoard
      */
     public void setSizeOfListOfMoves(int i){
         listOfMoves = new Position[i * i];
+    }
+
+    public int getCurrentMoveNumber(){
+        return currentMoveNumber;
     }
 
     /**

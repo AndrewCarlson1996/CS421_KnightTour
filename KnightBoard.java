@@ -8,6 +8,7 @@
 public class KnightBoard
 {
 
+    
     //create board attributes
     private int boardDimensions; //The height/width of the square knight board
     private Position[][] board; //The 2d array of Positions that holds the knight board

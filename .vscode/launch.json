@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "KnightTour",
             "projectName": "CS421_KnightTour_8ad877f2",
-            "args": "0 8 0 0"
+            "args": "1 8 0 0"
         },
         {
             "type": "java",

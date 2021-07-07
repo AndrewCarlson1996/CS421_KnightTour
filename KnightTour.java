@@ -50,15 +50,15 @@ public class KnightTour {
             basicClockwiseCheck(startingX, startingY);
         }
         else if(solveMethod == 1){ //if method = 1, heuristicI method is used
-            HeuristicI(startingX, startingY);
+            Heuristic(startingX, startingY, 0);
         }
         else if(solveMethod == 2){ //if method = 2, heuristicII method is used
-            HeuristicII(startingX, startingY);
+            Heuristic(startingX, startingY, 1);
         }
 
+        System.out.println("The total number of moves is: " + board.getNumberOfMoves());
         if(solutionFound){ //print out the number of moves and the board
-            System.out.println("The total number of moves is: " + board.getNumberOfMoves());
-
+            
             int[][] intBoard = board.loadBoardToArray();
             System.out.println();
             for(int[] row : intBoard) {
@@ -140,156 +140,100 @@ public class KnightTour {
      * @param x
      * @param y
      */
-    public static void HeuristicI(int x, int y){
-        Position currentPos = board.getPosition(x, y); //the position that the knight is currently on
-        Position previousPos = board.getPreviousPosition(); //the position that the knight just came from
-        Position posToGo = null; //the next move to be made
-        int closestDistance = -1; //the current distance from the edge of the positions closest to the edge
-        int newClockPosition = 0; //temp storage value for next clock hand position
+    public static void Heuristic(int x, int y, int method){
 
-        //retrieve each position in clockwise order
+        Position currentPos = board.getPosition(x, y);
+        Position[] moves = new Position[numberOfValidMoves(currentPos)];
+        int currentLocalMoveNumber = 0;
+        
+        if(board.getCurrentMoveNumber() == (dimens * dimens)){
+            if(solutionFound == false){
+                solutionFound = true;
+            }
+            return;
+        }
+        if(moves.length == 0){
+            if(board.getCurrentMoveNumber() == (dimens * dimens)){
+                if(solutionFound == false){
+                    solutionFound = true;
+                }
+            }
+            board.removeElement(x, y);
+            return;
+        }
+        if(board.getPosition(startingX, startingY) == currentPos){
+            if(homeNumberMoveIndex == homeNumberMove){
+                return;
+            }
+            homeNumberMoveIndex++;
+        }
         Position pos1 = board.getPosition(x + 1, y - 2);
+        if(pos1 != null && pos1.getValidity() && board.checkBounds(x + 1, y - 2)){
+            moves[currentLocalMoveNumber] = pos1;
+            currentLocalMoveNumber++;
+        }
         Position pos2 = board.getPosition(x + 2, y - 1);
+        if(pos2 != null && pos2.getValidity() && board.checkBounds(x + 2, y - 1)){
+            moves[currentLocalMoveNumber] = pos2;
+            currentLocalMoveNumber++;
+        }
         Position pos3 = board.getPosition(x + 2, y + 1);
+        if(pos3 != null && pos3.getValidity() && board.checkBounds(x + 2, y + 1)){
+            moves[currentLocalMoveNumber] = pos3;
+            currentLocalMoveNumber++;
+        }
         Position pos4 = board.getPosition(x + 1, y + 2);
+        if(pos4 != null && pos4.getValidity() && board.checkBounds(x + 1, y + 2)){
+            moves[currentLocalMoveNumber] = pos4;
+            currentLocalMoveNumber++;
+        }
         Position pos5 = board.getPosition(x - 1, y + 2);
+        if(pos5 != null && pos5.getValidity() && board.checkBounds(x - 1, y + 2)){
+            moves[currentLocalMoveNumber] = pos5;
+            currentLocalMoveNumber++;
+        }
         Position pos6 = board.getPosition(x - 2, y + 1);
+        if(pos6 != null && pos6.getValidity() && board.checkBounds(x - 2, y + 1)){
+            moves[currentLocalMoveNumber] = pos6;
+            currentLocalMoveNumber++;
+        }
         Position pos7 = board.getPosition(x - 2, y - 1);
+        if(pos7 != null && pos7.getValidity() && board.checkBounds(x - 2, y - 1)){
+            moves[currentLocalMoveNumber] = pos7;
+            currentLocalMoveNumber++;
+        }
         Position pos8 = board.getPosition(x - 1, y - 2);
+        if(pos8 != null && pos8.getValidity() && board.checkBounds(x - 1, y - 2)){
+            moves[currentLocalMoveNumber] = pos8;
+            currentLocalMoveNumber++;
+        }
+        if(method == 0){
+            sortEdge(moves);
+            for (Position position : moves) {
+                int xVal = position.getXCoor();
+                int yVal = position.getYCoor();
+                if(solutionFound != true && position.getValidity() && board.checkBounds(xVal, yVal)){
+                    board.addElement(xVal, yVal);
+                    Heuristic(xVal, yVal, method);
+                }
+    
+            }
+        }
+        else if(method == 1){
+            sortMoves(moves);
+            for (Position position : moves) {
+                int xVal = position.getXCoor();
+                int yVal = position.getYCoor();
+                if(solutionFound != true && position.getValidity() && board.checkBounds(xVal, yVal)){
+                    board.addElement(xVal, yVal);
+                    Heuristic(xVal, yVal, method);
+                }
 
-        //work counter-clockwise around the board till the closest valid position to noon is found 
-        //that has not already been tried before in this instance
-        if(currentPos.getClockPosition() == 8){ //if clock hand is already on 8th position, reset current position of clock hand and back-track
-            currentPos.resetClockPosition();
+            }
+        }
+        if(solutionFound != true){
             board.removeElement(x, y);
-            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
-        }
-        if(pos8.getValidity() && board.distanceToEdge(pos8) <= closestDistance && currentPos.getClockPosition() < 8){
-            newClockPosition = 8;
-            posToGo = pos8;
-        }
-        if(pos7.getValidity() && board.distanceToEdge(pos7) <= closestDistance && currentPos.getClockPosition() < 7){
-            newClockPosition = 7;
-            posToGo = pos7;
-        }
-        if(pos6.getValidity() && board.distanceToEdge(pos6) <= closestDistance && currentPos.getClockPosition() < 6){
-            newClockPosition = 6;
-            posToGo = pos6;
-        }
-        if(pos5.getValidity() && board.distanceToEdge(pos5) <= closestDistance && currentPos.getClockPosition() < 5){
-            newClockPosition = 5;
-            posToGo = pos5;
-        }
-        if(pos4.getValidity() && board.distanceToEdge(pos4) <= closestDistance && currentPos.getClockPosition() < 4){
-            newClockPosition = 4;
-            posToGo = pos4;
-        }
-        if(pos3.getValidity() && board.distanceToEdge(pos3) <= closestDistance && currentPos.getClockPosition() < 3){
-            newClockPosition = 3;
-            posToGo = pos3;
-        }
-        if(pos2.getValidity() && board.distanceToEdge(pos2) <= closestDistance && currentPos.getClockPosition() < 2){
-            newClockPosition = 2;
-            posToGo = pos2;
-        }
-        if(pos1.getValidity() && board.distanceToEdge(pos1) <= closestDistance && currentPos.getClockPosition() < 1){
-            newClockPosition = 1;
-            posToGo = pos1;
-        }
-        
-        board.addElement(posToGo.getXCoor(), posToGo.getYCoor());
-        currentPos.setClockPosition(newClockPosition);
-        HeuristicI(posToGo.getXCoor(), posToGo.getYCoor());
-
-        
-        if(currentPos.getClockPosition() == 0){ //if no good position was found, reset current position and back-track
-            currentPos.resetClockPosition();
-            board.removeElement(x, y);
-            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
-        }
-    }
-
-    /**
-     * Solves the knight tour board by moving the knight to open positions with
-     * the fewest amount of next possible moves
-     * 
-     * @param x x coordinate of the position being checked
-     * @param y y coordinate of the position being checked
-     */
-    public static void HeuristicII(int x, int y){
-        Position currentPos = board.getPosition(x, y); //the position that the knight is currently on
-        Position previousPos = board.getPreviousPosition(); //the position that the knight just came from
-        Position posToGo = null; //the next move to be made
-        int numValidMoves = -1; //number of moves that can be made from each next-possible position
-        int newClockPosition = 0; //the position that the clock hand is currently at
-
-        //retrieve each position in clockwise order
-        Position pos1 = board.getPosition(x + 1, y - 2);
-        Position pos2 = board.getPosition(x + 2, y - 1);
-        Position pos3 = board.getPosition(x + 2, y - 1);
-        Position pos4 = board.getPosition(x + 1, y - 2);
-        Position pos5 = board.getPosition(x - 1, y - 2);
-        Position pos6 = board.getPosition(x - 2, y - 1);
-        Position pos7 = board.getPosition(x - 2, y + 1);
-        Position pos8 = board.getPosition(x - 1, y + 2);
-
-        //work counter-clockwise around the board till the closest valid position to noon is found 
-        //that has not already been tried before in this instance
-        if(currentPos.getClockPosition() == 8){ //if clock hand is already on 8th position, reset current position of clock hand and back-track
-            currentPos.resetClockPosition();
-            board.removeElement(x, y);
-            HeuristicII(previousPos.getXCoor(), previousPos.getYCoor());
-        }
-        if(pos8.getValidity() && (numberOfValidMoves(pos8) == -1) && currentPos.getClockPosition() < 8){
-            numValidMoves = numberOfValidMoves(pos8);
-            newClockPosition = 8;
-            posToGo = pos8;
-        }
-        if(pos7.getValidity() && (numberOfValidMoves(pos7) == -1 || numberOfValidMoves(pos7) <= numValidMoves) && currentPos.getClockPosition() < 7){
-            numValidMoves = numberOfValidMoves(pos7);
-            newClockPosition = 7;
-            posToGo = pos7;
-        }
-        if(pos6.getValidity() && (numberOfValidMoves(pos6) == -1 || numberOfValidMoves(pos6) <= numValidMoves) && currentPos.getClockPosition() < 6){
-            numValidMoves = numberOfValidMoves(pos6);
-            newClockPosition = 6;
-            posToGo = pos6;
-        }
-        if(pos5.getValidity() && (numberOfValidMoves(pos5) == -1 || numberOfValidMoves(pos5) <= numValidMoves) && currentPos.getClockPosition() < 5){
-            numValidMoves = numberOfValidMoves(pos5);
-            newClockPosition = 5;
-            posToGo = pos5;
-        }
-        if(pos4.getValidity() && (numberOfValidMoves(pos4) == -1 || numberOfValidMoves(pos4) <= numValidMoves) && currentPos.getClockPosition() < 4){
-            numValidMoves = numberOfValidMoves(pos4);
-            newClockPosition = 4;
-            posToGo = pos4;
-        }
-        if(pos3.getValidity() && (numberOfValidMoves(pos3) == -1 || numberOfValidMoves(pos3) <= numValidMoves) && currentPos.getClockPosition() < 3){
-            numValidMoves = numberOfValidMoves(pos3);
-            newClockPosition = 3;
-            posToGo = pos3;
-        }
-        if(pos2.getValidity() && (numberOfValidMoves(pos2) == -1 || numberOfValidMoves(pos2) <= numValidMoves) && currentPos.getClockPosition() < 2){
-            numValidMoves = numberOfValidMoves(pos2);
-            newClockPosition = 2;
-            posToGo = pos2;
-        }
-        if(pos1.getValidity() && (numberOfValidMoves(pos1) == -1 || numberOfValidMoves(pos1) <= numValidMoves) && currentPos.getClockPosition() < 1){
-            numValidMoves = numberOfValidMoves(pos1);
-            newClockPosition = 1;
-            posToGo = pos1;
-        }
-        
-        board.addElement(posToGo.getXCoor(), posToGo.getYCoor());
-        currentPos.setClockPosition(newClockPosition);
-        HeuristicI(posToGo.getXCoor(), posToGo.getYCoor());
-
-        
-        if(currentPos.getClockPosition() == 0){ //if no good position was found, reset current position and back-track
-            currentPos.resetClockPosition();
-            board.removeElement(x, y);
-            HeuristicI(previousPos.getXCoor(), previousPos.getYCoor());
+            return;
         }
     }
 
@@ -363,5 +307,43 @@ public class KnightTour {
             System.out.print("\t");
         }
         System.out.println();
+    }
+
+    public static Position[] sortEdge(Position[] array){
+       
+        if(array.length == 0 || array.length == 1){
+            return array;
+        }
+        for(int i = 0; i < array.length; i++){
+            for(int index = 0; index < array.length - 1; index++){
+                int d1 = array[index].getDistanceToEdge();
+                int d2 = array[index + 1].getDistanceToEdge();
+                if(d1 > d2){
+                    Position tempPos = array[index];
+                    array[index] = array[index + 1];
+                    array[index + 1] = tempPos;
+                }
+            }
+        } 
+        return array;
+    }
+
+    public static Position[] sortMoves(Position[] array){
+       
+        if(array.length == 0 || array.length == 1){
+            return array;
+        }
+        for(int i = 0; i < array.length; i++){
+            for(int index = 0; index < array.length - 1; index++){
+                int d1 = numberOfValidMoves(array[index]);
+                int d2 = numberOfValidMoves(array[index + 1]);
+                if(d1 > d2){
+                    Position tempPos = array[index];
+                    array[index] = array[index + 1];
+                    array[index + 1] = tempPos;
+                }
+            }
+        } 
+        return array;
     }
 }

@@ -12,6 +12,7 @@ public class Position{
     private int xCoord;
     private int yCoord;
     private int clockPosition;
+    private int distanceToEdge;
 
     /**
      * Constructor for the Position class
@@ -105,5 +106,13 @@ public class Position{
 
     public void moveNumToString(){
         System.out.print(moveNumber);
+    }
+
+    public int getDistanceToEdge(){
+        return distanceToEdge;
+    }
+
+    public void setDistanceToEdge(int i){
+        distanceToEdge = i;
     }
 }

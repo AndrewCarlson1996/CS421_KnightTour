@@ -33,6 +33,7 @@ public class KnightBoard
             for(int j = 0; j < dimensions; j++){
                 Position newPos = new Position(i, j);
                 board[i][j] = newPos;
+                distanceToEdge(board[i][j]);
             }
         }
         currentPos = 0;
@@ -62,6 +63,7 @@ public class KnightBoard
         numMoves++; //Total number of moves used to solve board
         listOfMoves[currentPos] = (board[x][y]); //The array that stores the list of moves made
         currentPos++; //increment array
+        System.out.println(currentMoveNumber);
     }
 
     /**
@@ -75,6 +77,7 @@ public class KnightBoard
         board[x][y].setValidity(true);
         listOfMoves[currentPos - 1] = null;
         currentPos--;
+        System.out.println(currentMoveNumber);
     }
 
     /**
@@ -147,44 +150,44 @@ public class KnightBoard
      * @param pos 
      * @return The distance from the edge
      */
-    public int distanceToEdge(Position pos){
+    public void distanceToEdge(Position pos){
         int totalDistance = 0;
         int x = pos.getXCoor();
         int y = pos.getYCoor();
 
-        if(boardDimensions % 2 == 0){ //If the dimensions of the board are odd
-            if(x < boardDimensions / 2){
+        if(boardDimensions % 2 != 0){ //If the dimensions of the board are odd
+            if(x <= boardDimensions / 2){
                 totalDistance = x;
             }
             else{
-                totalDistance = boardDimensions - x;
+                totalDistance = boardDimensions - (x + 1);
             }
     
             if(y < boardDimensions / 2){
                 totalDistance += y;
             }
             else{
-                totalDistance += (boardDimensions - y);
+                totalDistance += (boardDimensions - (y + 1));
             }
     
-            return totalDistance;
+            pos.setDistanceToEdge(totalDistance);
         }
         else{ //If the dimensions of the board are even
-            if(x <= boardDimensions / 2){
+            if(x < (boardDimensions / 2)){
                 totalDistance = x;
             }
             else{
-                totalDistance = boardDimensions - x;
+                totalDistance = (boardDimensions - 1) - x;
             }
     
-            if(y <= boardDimensions / 2){
+            if(y < boardDimensions / 2){
                 totalDistance += y;
             }
             else{
-                totalDistance += (boardDimensions - y);
+                totalDistance += ((boardDimensions - 1) - y);
             }
     
-            return totalDistance;
+            pos.setDistanceToEdge(totalDistance);
         }
     }
 
@@ -193,7 +196,6 @@ public class KnightBoard
             if(y >= 0 && y < boardDimensions){
                 return true;
             }
-            return false;
         }
         return false;
     }

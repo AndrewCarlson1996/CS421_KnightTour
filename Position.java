@@ -11,7 +11,6 @@ public class Position{
     private int moveNumber;
     private int xCoord;
     private int yCoord;
-    private int clockPosition;
     private int distanceToEdge;
 
     /**
@@ -25,7 +24,6 @@ public class Position{
         moveNumber = 0;
         xCoord = x;
         yCoord = y;
-        clockPosition = 0;
     }
 
     /**
@@ -48,7 +46,7 @@ public class Position{
     /**
      * Sets the move number of the position
      * 
-     * @param i The value used for the move number
+     * @param i The value used for the move number.
      */
     public void setMoveNumber(int i){
         moveNumber = i;
@@ -56,7 +54,7 @@ public class Position{
 
     /**
      * 
-     * @return The move number at the position
+     * @return The move number at the position.
      */
     public int getMoveNumber(){
         return moveNumber;
@@ -64,7 +62,7 @@ public class Position{
 
     /**
      * 
-     * @return X cooradinate of the position
+     * @return X cooradinate of the position.
      */
     public int getXCoor(){
         return xCoord;
@@ -72,46 +70,30 @@ public class Position{
 
     /**
      * 
-     * @return Y cooradinate of the position
+     * @return Y cooradinate of the position.
      */
     public int getYCoor(){
         return yCoord;
     }
 
     /**
-     * Sets the clock hand position of the position
-     * This keeps track of what "next move" the position last looked at
-     * 
-     * @param i value of 1-8 based on 8 possible next positions a knight can move to
+     * Prints the move number to the console.
      */
-    public void setClockPosition(int i){
-        clockPosition = i;
-    }
-
-    /**
-     * 
-     * 
-     * @return The position of the clock hand, this is the last "next move" the knight at the current position "looked at"
-     */
-    public int getClockPosition(){
-        return clockPosition;
-    }
-
-    /**
-     * Reset the clock hand back to 0, the default position of the clock hand
-     */
-    public void resetClockPosition(){
-        clockPosition = 0;
-    }
-
     public void moveNumToString(){
         System.out.print(moveNumber);
     }
 
+    /**
+     * Returns the integer value of the number of positions from the edge a perticular position is.
+     */
     public int getDistanceToEdge(){
         return distanceToEdge;
     }
 
+    /**
+     * sets the distance that a position is to the edge of the knight board.
+     * @param i
+     */
     public void setDistanceToEdge(int i){
         distanceToEdge = i;
     }

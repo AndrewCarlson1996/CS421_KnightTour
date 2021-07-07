@@ -53,8 +53,8 @@ public class KnightBoard
     /**
      * Adds an element to the knight board
      * 
-     * @param x X coordinate of the position where the element is to be added
-     * @param y Y coordinate of the position where the element is to be added
+     * @param x 
+     * @param y 
      */
     public void addElement(int x, int y){
         currentMoveNumber++; //The number that will be placed inside the next filled position on the board
@@ -63,13 +63,13 @@ public class KnightBoard
         numMoves++; //Total number of moves used to solve board
         listOfMoves[currentPos] = (board[x][y]); //The array that stores the list of moves made
         currentPos++; //increment array
-        System.out.println(currentMoveNumber);
     }
 
     /**
+     * "Removes" an element from the knight board.
      * 
-     * @param x X coordinate of the position where the element is to be removed
-     * @param y Y coordinate of the position where the element is to be removed
+     * @param x 
+     * @param y 
      */
     public void removeElement(int x, int y){
         board[x][y].setMoveNumber(0);
@@ -77,13 +77,12 @@ public class KnightBoard
         board[x][y].setValidity(true);
         listOfMoves[currentPos - 1] = null;
         currentPos--;
-        System.out.println(currentMoveNumber);
     }
 
     /**
      * 
-     * @param x X coordinate of the position where the desired element is
-     * @param y Y coordinate of the position where the desired element is
+     * @param x 
+     * @param y 
      * @return The element at the specified position
      */
     public Position getElement(int x, int y){
@@ -122,7 +121,7 @@ public class KnightBoard
      * 
      * @param x 
      * @param y
-     * @return Position on knight board
+     * @return Position on knight board.
      */
     public Position getPosition(int x, int y){
         if(checkBounds(x, y)){
@@ -132,7 +131,7 @@ public class KnightBoard
     }
 
     /**
-     * Set the size of the array that holds the list of moves on the board
+     * Set the size of the array that holds the list of moves on the board.
      * 
      * @param i
      */
@@ -145,17 +144,17 @@ public class KnightBoard
     }
 
     /**
-     * Calculates the distance a position is from the edge of the board
+     * Calculates the distance a position is from the edge of the board.
      * 
      * @param pos 
-     * @return The distance from the edge
+     * @return The distance from the edge.
      */
     public void distanceToEdge(Position pos){
         int totalDistance = 0;
         int x = pos.getXCoor();
         int y = pos.getYCoor();
 
-        if(boardDimensions % 2 != 0){ //If the dimensions of the board are odd
+        if(boardDimensions % 2 != 0){ //If the dimensions of the board are odd.
             if(x <= boardDimensions / 2){
                 totalDistance = x;
             }
@@ -172,7 +171,7 @@ public class KnightBoard
     
             pos.setDistanceToEdge(totalDistance);
         }
-        else{ //If the dimensions of the board are even
+        else{ //If the dimensions of the board are even.
             if(x < (boardDimensions / 2)){
                 totalDistance = x;
             }
@@ -191,6 +190,13 @@ public class KnightBoard
         }
     }
 
+    /**
+     * Checks to see if a perticular cooridinate is in bounds.
+     * 
+     * @param x
+     * @param y
+     * @return true if the cooridinate is in bounds, false if it is not.
+     */
     public boolean checkBounds(int x, int y){
         if(x >= 0 && x < boardDimensions){
             if(y >= 0 && y < boardDimensions){
@@ -200,6 +206,13 @@ public class KnightBoard
         return false;
     }
 
+
+    /**
+     * Loads the move numbers number into an 2D array of integers.
+     * This is so it is easier to print in the main method of the driver class.
+     * 
+     * @return
+     */
     public int[][] loadBoardToArray(){
         int[][] intBoard = new int[boardDimensions][boardDimensions];
 
